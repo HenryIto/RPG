@@ -1,0 +1,709 @@
+package jogo;
+
+import java.util.Scanner;
+
+import java.util.Random;
+
+public class jogo {
+	private static Scanner leia = new Scanner(System.in);
+	private static Random gerador = new Random();
+	
+	private static int randomNum;
+	private static int randomAtaque;
+	private static int randomAtaque2;
+	private static int randomEscape;
+	private static int randomEscape2;
+	private static int randomOpcao;
+	private static int randomVida;
+	private static int randomEspada;
+	private static int randomCouroCobra;
+	private static int randomQtdCouroCobra;
+	private static int randomCouroOnca;
+	private static int randomQtdCouroOnca;
+	
+	private static String dificuldade = "";
+	private static boolean sobreviveu = true;
+	
+	private static boolean jaquetaCouro = true;
+	private static boolean calcaCouro = true;
+	
+	private static boolean jaquetaCouroCobra = false;
+	private static boolean calcaCouroCobra = false;
+	
+	private static boolean jaquetaCouroOnca = false;
+	private static boolean calcaCouroOnca = false;
+	
+	private static boolean tocoMadeira = false;
+	private static boolean espadaFerro = false;
+	private static int qtdCouroCobra = 0;
+	private static int qtdCouroOnca = 0;
+	
+	private static int tentativa = 0;
+	private static int cooldownDescansso = 3;
+	
+	private static int vida = 120;
+	private static int ataque = 5;
+	
+	private static int vidaCobra = 0;
+	private static int ataqueCobra = 0;
+	private static boolean correrCobra = true;
+	
+	private static int vidaOnca = 0;
+	private static int ataqueOnca = 0;
+	private static boolean correrOnca = true;
+	
+	private static int vidaGoblin = 0;
+	private static int ataqueGoblin = 0;
+	private static boolean correrGoblin = true;
+
+	private static void lutarCobra() {
+		boolean opcaoCobra = true;
+		while(opcaoCobra) {
+			System.out.println("\nVocê encontrou uma cobra. \nVocê quer enfrentrar a cobra ?\nS (Sim)\nN (Não)");
+			String opcaoCobra1 = leia.next();
+			opcaoCobra1 = opcaoCobra1.toUpperCase();
+			switch(opcaoCobra1) {
+				case "S":
+					randomAtaque = gerador.nextInt(7);
+					if(randomAtaque < 2) {
+						System.out.println("\nHP: " + (vida -= ataqueCobra) + "\nVocê errou a cobra" + "\nHP Cobra: " + vidaCobra + "\nA cobra acertou você");
+						while(vidaCobra > 0 && correrCobra == true && vida > 0) {
+							System.out.println("\nVocê ainda não derrotou a cobra, você quer atacar a cobra denovo, ou correr ? \nA (Atacar) \nC (Correr)");
+							String opcaoCobra2 = leia.next();
+							opcaoCobra2 = opcaoCobra2.toUpperCase();
+							switch(opcaoCobra2) {
+								case "A":
+									randomAtaque2 = gerador.nextInt(7);
+									if(randomAtaque2 < 3) {
+										System.out.println("\nVocê errou o ataque \nHP: "  + (vida -= ataqueCobra) + "\nA cobra acertou você \nHP Cobra: " + vidaCobra);
+									}else {
+										System.out.println("\nVocê atacou a cobra denovo \nHP: " + vida + "\nHP Cobra: " + (vidaCobra -= ataque));
+									}
+								break;
+								case "C":
+									randomEscape2 = gerador.nextInt(7);
+									if(randomEscape2 < 3) {
+										System.out.println("\nVocê conseguiu correr, mas a cobra conseguiu acertar você \nHP: " + (vida -= ataqueCobra));
+										correrCobra = false;
+									}else {
+										System.out.println("\nVocê conseguiu correr ileso");
+										correrCobra = false;
+									}
+								break;
+								default:
+									System.out.println("Escolha alguma das opções");
+								break;
+							}
+						}
+					}else {
+						System.out.println("\nHP: " + vida + "\nVocê acertou a cobra \nHP Cobra: " + (vidaCobra-=ataque));
+						while(vidaCobra > 0 && correrCobra == true && vida > 0) {
+							System.out.println("\nVocê ainda não derrotou a cobra, você quer atacar a cobra denovo, ou correr ? \nA (Atacar) \nC (Correr)");
+							String opcaoCobra3 = leia.next();
+							opcaoCobra3 = opcaoCobra3.toUpperCase();
+							switch(opcaoCobra3) {
+								case "A":
+									randomAtaque2 = gerador.nextInt(7);
+									if(randomAtaque2 < 3) {
+										System.out.println("\nVocê errou o ataque \nHP: "  + (vida -= ataqueCobra) + "\nA cobra acertou você \nHP Cobra: " + vidaCobra);
+									}else {
+										System.out.println("\nVocê atacou a cobra denovo \nHP: " + vida + "\nHP Cobra: " + (vidaCobra -= ataque));
+									}
+								break;
+								case "C":
+									randomEscape2 = gerador.nextInt(7);
+									if(randomEscape2 < 3) {
+										System.out.println("\nVocê conseguiu correr, mas a cobra conseguiu acertar você \nHP: " + (vida -= ataqueCobra));
+										correrCobra = false;
+									}else {
+										System.out.println("\nVocê conseguiu correr ileso");
+										correrCobra = false;
+									}
+								break;
+								default:
+									System.out.println("Escolha alguma das opções");
+								break;
+							}
+						}
+					}
+					opcaoCobra = false;
+				break;
+				case "N":
+					randomEscape = gerador.nextInt(7);
+					if(randomEscape < 3) {
+						System.out.println("\nHP: " + (vida -= ataqueCobra) + "\nVocê conseguiu escapar, mas a cobra conseguiu morder você");
+					}else {
+						System.out.println("\nVocê conseguiu escapar ileso");
+					}
+					opcaoCobra = false;
+				break;
+				default:
+					System.out.println("Escolha alguma das opções");
+				break;
+			}
+			correrCobra = true;
+			if(vidaCobra <= 0) {
+				System.out.println("Você conseguiu derrotar a cobra");
+				randomCouroCobra = gerador.nextInt(7);
+				if(randomCouroCobra < 3) {
+					randomQtdCouroCobra  = gerador.nextInt(3) + 3;
+					System.out.println("\nA cobra dropou " + randomQtdCouroCobra + " couro/s \nCouros de Cobras: " + (qtdCouroCobra += randomQtdCouroCobra));
+				}
+			}
+		}
+	}
+	
+	private static void lutarOnca() {
+		boolean opcaoOnca = true;
+		while(opcaoOnca) {
+			System.out.println("\nVocê encontrou uma onça. \nVocê quer enfrentrar a onça ?\nS (Sim)\nN (Não)");
+			String opcaoOnca1 = leia.next();
+			opcaoOnca1 = opcaoOnca1.toUpperCase();
+			switch(opcaoOnca1) {
+				case "S":
+					randomAtaque = gerador.nextInt(7);
+					if(randomAtaque < 2) {
+						System.out.println("\nHP: " + (vida -= ataqueOnca) + "\nVocê errou a onça" + "\nHP Onça: " + vidaOnca + "\nA onça acertou você");
+						while(vidaOnca > 0 && correrOnca == true && vida > 0) {
+							System.out.println("\nVocê ainda não derrotou a onça, você quer atacar a onça denovo, ou correr ? \nA (Atacar) \nC (Correr)");
+							String opcaoOnca2 = leia.next();
+							opcaoOnca2 = opcaoOnca2.toUpperCase();
+							switch(opcaoOnca2) {
+								case "A":
+									randomAtaque2 = gerador.nextInt(7);
+									if(randomAtaque2 < 3) {
+										System.out.println("\nVocê errou o ataque \nHP: "  + (vida -= ataqueOnca) + "\nA onça acertou você \nHP Onça: " + vidaOnca);
+									}else {
+										System.out.println("\nVocê atacou a onça denovo \nHP: " + vida + "\nHP Onça: " + (vidaOnca -= ataque));
+									}
+								break;
+								case "C":
+									randomEscape2 = gerador.nextInt(7);
+									if(randomEscape2 < 3) {
+										System.out.println("\nVocê conseguiu correr, mas a onça conseguiu acertar você \nHP: " + (vida -= ataqueOnca));
+										correrOnca = false;
+									}else {
+										System.out.println("\nVocê conseguiu correr ileso");
+										correrOnca = false;
+									}
+								break;
+								default:
+									System.out.println("Escolha alguma das opções");
+								break;
+							}
+						}
+					}else {
+						System.out.println("\nHP: " + vida + "\nVocê acertou a onça \nHP Onça: " + (vidaOnca -= ataque));
+						while(vidaOnca > 0 && correrOnca == true && vida >0) {
+							System.out.println("\nVocê ainda não derrotou a onça, você quer atacar a onça denovo, ou correr ? \nA (Atacar) \nC (Correr)");
+							String opcaoOnca3 = leia.next();
+							opcaoOnca3 = opcaoOnca3.toUpperCase();
+							switch(opcaoOnca3) {
+								case "A":
+									randomAtaque2 = gerador.nextInt(7);
+									if(randomAtaque2 < 3) {
+										System.out.println("\nVocê errou o ataque \nHP: "  + (vida -= ataqueOnca) + "\nA onça acertou você \nHP Onça: " + vidaOnca);
+									}else {
+										System.out.println("\nVocê atacou a onça denovo \nHP: " + vida + "\nHP Onça: " + (vidaOnca -= ataque));
+									}
+								break;
+								case "C":
+									randomEscape2 = gerador.nextInt(7);
+									if(randomEscape2 < 3) {
+										System.out.println("\nVocê conseguiu correr, mas a onça conseguiu acertar você \nHP: " + (vida -= ataqueOnca));
+										correrOnca = false;
+									}else {
+										System.out.println("\nVocê conseguiu correr ileso");
+										correrOnca = false;
+									}
+								break;
+								default:
+									System.out.println("Escolha alguma das opções");
+								break;
+							}
+						}
+					}
+					opcaoOnca = false;
+				break;
+				case "N":
+					randomEscape = gerador.nextInt(7);
+					if(randomEscape < 3) {
+						System.out.println("\nHP: " + (vida -= ataqueOnca) + "\nVocê conseguiu escapar, mas a onça conseguiu morder você");
+					}else {
+						System.out.println("\nVocê conseguiu escapar ileso");
+					}
+					opcaoOnca = false;
+				break;
+				default:
+					System.out.println("Escolha alguma das opções");
+				break;
+			}
+			correrOnca = true;
+			if(vidaOnca <= 0) {
+				System.out.println("Você conseguiu derrotar a onça");
+				randomCouroOnca = gerador.nextInt(7);
+				if(randomCouroCobra < 3) {
+					randomQtdCouroCobra  = gerador.nextInt(3) + 3;
+					System.out.println("\nA onça dropou " + randomQtdCouroCobra + " couro/s \nCouros de Onças: " + (qtdCouroOnca += randomQtdCouroCobra));
+				}
+			}
+		}
+	}
+	
+	private static void lutarGoblin() {
+		boolean opcaoGoblin = true;
+		while(opcaoGoblin) {
+			System.out.println("\nVocê encontrou um goblin. \nVocê quer enfrentar o goblin ? \nS (Sim) \nN (Não)");
+			String opcaoGoblin1 = leia.next();
+			opcaoGoblin1 = opcaoGoblin1.toUpperCase();
+			switch(opcaoGoblin1) {
+				case "S":
+						randomAtaque = gerador.nextInt(7);
+						if(randomAtaque < 2) {
+							System.out.println("\nHP: " + (vida -= ataqueGoblin) + "\nVocê errou o goblin" + "\nHP Goblin: " + vidaGoblin + "\nO goblin acertou você");
+							while(vidaGoblin > 0 && correrGoblin == true && vida > 0) {
+								System.out.println("\nVocê ainda não derrotou o goblin, você quer atacar o goblin denovo, ou correr ? \nA (Atacar) \nC (Correr)");
+								String opcaoGoblin2 = leia.next();
+								opcaoGoblin2 = opcaoGoblin2.toUpperCase();
+								switch(opcaoGoblin2) {
+									case "A":
+										randomAtaque2 = gerador.nextInt(7);
+										if(randomAtaque2 < 3) {
+											System.out.println("\nVocê errou o ataque \nHP: "  + (vida -= ataqueGoblin) + "\nO goblin acertou você \nHP Goblin: " + vidaGoblin);
+										}else {
+											System.out.println("\nVocê atacou o goblin denovo \nHP: " + vida + "\nHP Goblin: " + (vidaGoblin -= ataque));
+										}
+									break;
+									case "C":
+										randomEscape2 = gerador.nextInt(7);
+										if(randomEscape2 < 3) {
+											System.out.println("\nVocê conseguiu correr, mas o goblin conseguiu acertar você \nHP: " + (vida -= ataqueGoblin));
+											correrGoblin = false;
+										}else {
+											System.out.println("\nVocê conseguiu correr ileso");
+											correrGoblin = false;
+										}
+									break;
+									default:
+										System.out.println("Escolha alguma das opções");
+									break;
+								}
+							}
+						}else {
+							System.out.println("\nHP: " + vida + "\nVocê acertou o goblin \nHP Goblin:" + (vidaGoblin -= ataque));
+							while(vidaGoblin > 0  && correrGoblin == true && vida > 0) {
+								System.out.println("\nVocê ainda não derrotou o goblin, você quer atacar o goblin denovo, ou correr ? \nA (Atacar) \nC (Correr)");
+								String opcaoGoblin3 = leia.next();
+								opcaoGoblin3 = opcaoGoblin3.toUpperCase();
+								switch(opcaoGoblin3) {
+									case "A":
+										randomAtaque2 = gerador.nextInt(7);
+										if(randomAtaque2 < 3) {
+											System.out.println("\nVocê errou o ataque \nHP: "  + (vida -= ataqueGoblin) + "\nO goblin acertou você \nHP Goblin: " + vidaGoblin);
+										}else {
+											System.out.println("\nVocê atacou o goblin denovo \nHP: " + vida + "\nHP Goblin: " + (vidaGoblin -= ataque));
+										}
+									break;
+									case "C":
+										randomEscape2 = gerador.nextInt(7);
+										if(randomEscape2 < 3) {
+											System.out.println("\nVocê conseguiu correr, mas o goblin conseguiu acertar você \nHP: " + (vida -= ataqueGoblin));
+											correrGoblin = false;
+										}else {
+											System.out.println("\nVocê conseguiu correr ileso");
+											correrGoblin = false;
+										}
+									break;
+									default:
+										System.out.println("Escolha alguma das opções");
+									break;
+								}
+							}
+						}
+						opcaoGoblin = false;
+				break;
+				case "N":
+					randomEscape = gerador.nextInt(7);
+					if(randomEscape < 3) {
+						System.out.println("\nHP: " + (vida -= ataqueGoblin) + "\nVocê conseguiu escapar, mas o goblin conseguiu atacar você");
+					}else {
+						System.out.println("\nVocê conseguiu escapar ileso");
+					}
+					opcaoGoblin = false;
+				break;
+				default:
+					System.out.println("\nEscolha alguma das opções");
+				break;
+			}  
+			correrGoblin = true;
+			if(vidaGoblin <= 0) {
+				System.out.println("Você conseguiu derrotar o goblin");
+				if(ataque == 50) {
+					System.out.println("Você dropou outra espada");
+					System.out.println("Você ja tem uma espada de ferro equipada");
+				}
+				else {
+					randomEspada = gerador.nextInt(7);
+					if(randomEspada < 3) {
+						boolean opcaoEspada = true;
+						while(opcaoEspada) {
+							System.out.println("\nO goblin dropou uma espada de ferro você quer pegar e equipar a espada ? \nS (Sim) \nN (Não)");
+							String opcaoEspada1 = leia.next();
+							opcaoEspada1 = opcaoEspada1.toUpperCase();
+							switch(opcaoEspada1) {
+							case "S":
+								ataque -= 20;
+								tocoMadeira = false;
+								System.out.println("\nVocê desequipou o toco de madeira.");
+								ataque += 45;
+								System.out.println("Você equipou a espada de ferro");
+								espadaFerro = true;
+								opcaoEspada = false;
+							break;
+							case "N":
+								System.out.println("\nVocê decidiu não pegar a espada de ferro");
+								opcaoEspada = false;
+							break;
+							default:
+								System.out.println("\nEscolha alguma das opções");
+							break;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private static void acampar() {
+		
+		System.out.println("\nVocê quer descansar, acessar o inventário, confeccionar intens ou seguir em frente ? \nD (Descansar) \nI (Inventário) \nC (Confeccionar Item) \nS (Seguir em frente)");
+		String opcaoAcampar = leia.next();
+		opcaoAcampar = opcaoAcampar.toUpperCase();
+		
+		switch(opcaoAcampar) {
+			case "D":
+				if(cooldownDescansso > 0) {
+					System.out.println("Você tem que esperar " + cooldownDescansso + " rodadas para poder acampar denovo");
+				}else {
+					System.out.println("Você ja consegue descansar denovo");
+					randomVida = gerador.nextInt(40) + 20;
+					System.out.println("Você recuperou " + (randomVida) + " de HP \nHP: " + (vida += randomVida));
+					if(vida >= 160 && (jaquetaCouroOnca == true && calcaCouroOnca == true)) {
+						vida = 160;
+					}
+					else if(vida >= 140 && (jaquetaCouroOnca == true || calcaCouroOnca == true)) {
+						vida = 140;
+					}
+					else if(vida >= 140 && (jaquetaCouroCobra == true && calcaCouroCobra == true)) {
+						vida = 140;
+					}
+					else if(vida >= 130 && (jaquetaCouroCobra == true || calcaCouroCobra == true)) {
+						vida = 130;
+					}
+					else if(vida >= 120) {
+						vida = 120;
+					}
+					cooldownDescansso = 4;
+				}
+				if(cooldownDescansso < 0) {
+					cooldownDescansso = 3;
+				}
+			break;
+			case "I":
+				System.out.println("Inventário---------------");
+				if(tocoMadeira == true) {
+					System.out.println("Toco de Madeira");
+				}
+				if(espadaFerro == true) {
+					System.out.println("Espada de Ferro");
+				}
+				if(jaquetaCouro == true) {
+					System.out.println("Jaqueta de Couro");
+				}
+				if(calcaCouro == true) {
+					System.out.println("Calça de Couro");
+				}
+				if(jaquetaCouroCobra == true) {
+					System.out.println("Jaqueta de Couro de Cobra");
+				}
+				if(calcaCouroCobra == true) {
+					System.out.println("Calça de Couro de Cobra");
+				}
+				if(jaquetaCouroOnca == true) {
+					System.out.println("Jaqueta de Couro de Onça");
+				}
+				if(calcaCouroOnca == true) {
+					System.out.println("Calça de Couro de Onça");
+				}
+				if(qtdCouroCobra > 0) {
+					System.out.println("Couro de Cobra x" + qtdCouroCobra);
+				}
+				if(qtdCouroOnca > 0) {
+					System.out.println("Couro de Onça x" + qtdCouroOnca);
+				}
+			break;
+			case "C":
+				System.out.println("\nEscolha o item que você quer confeccionar \n1 (Jaqueta de Couro de Cobra) \n2 (Calça de Couro de Cobra) \n3 (Jaqueta de Couro de Onça) \n4 (Calça de Couro de Onça)");
+				String opcaoCraft = leia.next();
+				switch(opcaoCraft) {
+					case "1":
+						if(qtdCouroCobra >= 8 && jaquetaCouro == true) {
+							System.out.println("Você conseguiu confeccionar uma jaqueta de couro de cobra");
+							System.out.println("Você desequipou a jaqueta de couro");
+							vida -= 10;
+							System.out.println("Você equipou a jaqueta de couro de cobra");
+							vida += 20;
+							qtdCouroCobra -= 8;
+							jaquetaCouro = false;
+							jaquetaCouroCobra = true;
+						}
+						else if(qtdCouroCobra >= 8 && jaquetaCouroOnca == true) {
+							System.out.println("Você conseguiu confeccionar uma jaqueta de couro de cobra");
+							System.out.println("Você desequipou a jaqueta de couro de onça");
+							vida -= 30;
+							System.out.println("Você equipou a jaqueta de couro de cobra");
+							vida += 20;
+							qtdCouroCobra -= 8;
+							jaquetaCouroOnca = false;
+							jaquetaCouroCobra = true;
+						}
+						else {
+							System.out.println("Você não tem os materiais suficientes");
+							System.out.println("Você precisa de 8 couros de cobras");
+						}
+					break;
+					case "2":
+						if(qtdCouroCobra >= 7 && calcaCouro == true){
+							System.out.println("Você conseguiu confeccionar uma calça de couro de cobra");
+							System.out.println("Você desequipou a calça de couro");
+							vida -= 10;
+							System.out.println("Você equipou a jaqueta de couro de cobra");
+							vida += 20;
+							qtdCouroCobra -= 7;
+							calcaCouro = false;
+							calcaCouroCobra = true;
+						}
+						else if(qtdCouroCobra >= 7 && calcaCouroOnca == true) {
+							System.out.println("Você conseguiu confeccionar uma calça de couro de cobra");
+							System.out.println("Você desequipou a calça de couro de onça");
+							vida -= 30;
+							System.out.println("Você equipou a jaqueta de couro de cobra");
+							vida += 20;
+							qtdCouroCobra -= 7;
+							calcaCouroOnca = false;
+							calcaCouroCobra = true;
+						}
+						else {
+							System.out.println("Você não tem os materiais suficientes");
+							System.out.println("Você precisa de 7 couros de cobras");
+						}
+					break;
+					case "3":
+						if(qtdCouroOnca >= 8 && jaquetaCouro == true) {
+							System.out.println("Você conseguiu confeccionar uma jaqueta de couro de onça");
+							System.out.println("Você desequipou a jaqueta de couro");
+							vida -= 10;
+							System.out.println("Você equipou a jaqueta de couro de onça");
+							vida += 30;
+							qtdCouroOnca -= 8;
+							jaquetaCouro = false;
+							jaquetaCouroOnca = true;
+						}
+						else if(qtdCouroOnca >= 8 && jaquetaCouroCobra == true) {
+							System.out.println("Você conseguiu confeccionar uma jaqueta de couro de onça");
+							System.out.println("Você desequipou a jaqueta de couro de cobra");
+							vida -= 20;
+							System.out.println("Você equipou a jaqueta de couro de onça");
+							vida += 30;
+							qtdCouroOnca -= 8;
+							jaquetaCouroCobra = false;
+							jaquetaCouroOnca = true;
+						}
+						else {
+							System.out.println("Você não tem os materiais suficientes");
+							System.out.println("Você precisa de 8 couros de onças");
+						}
+					break;
+					case "4":
+						if(qtdCouroOnca >= 7 && calcaCouro == true) {
+							System.out.println("Você conseguiu confeccionar uma calça de couro de onça");
+							System.out.println("Você desequipou a calça de couro");
+							vida -= 10;
+							System.out.println("Você equipou a calça de couro de onça");
+							vida += 30;
+							qtdCouroOnca -= 7;
+							calcaCouro = false;
+							calcaCouroOnca = true;
+						}
+						else if(qtdCouroOnca >= 7 && calcaCouroCobra == true) {
+							System.out.println("Você conseguiu confeccionar uma calça de couro de onça");
+							System.out.println("Você desequipou a calça de couro de cobra");
+							vida -= 20;
+							System.out.println("Você equipou a calça de couro de onça");
+							vida += 30;
+							qtdCouroOnca -= 7;
+							calcaCouroCobra = false;
+							calcaCouroOnca = true;
+						}
+						else {
+							System.out.println("Você não tem os materiais suficientes");
+							System.out.println("Você precisa de 7 couros de onças");
+						}
+					break;
+					default:
+						System.out.println("Escolha alguma das opções");
+					break;
+				}
+			break;
+			case "S":
+				System.out.println("Você decidiu seguir em frente");
+				decisao();
+			break;
+			default:
+				System.out.println("Escolha alguma das opções");
+			break;
+		}
+		
+
+		
+	}
+	
+	private static void decisao() {
+		randomOpcao = gerador.nextInt(16);
+		if(randomOpcao <= 7) {
+			lutarCobra();
+		}
+		else if (randomOpcao >= 8 && randomOpcao <= 12) {
+			lutarGoblin();
+		}
+		else if(randomOpcao >= 13) {
+			lutarOnca();
+		}
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		boolean dificuldadeOpcao = true;
+		while(dificuldadeOpcao) {
+			System.out.println("Escolha a dificuldade: \nF (Facil) \nM (Medio) \nD (Dificil)");
+			dificuldade = leia.next();
+			dificuldade = dificuldade.toUpperCase();
+			
+			switch(dificuldade) {
+			case "F":
+				vidaCobra = 10;
+				ataqueCobra = 5;
+				vidaOnca = 40;
+				ataqueOnca = 30;
+				vidaGoblin = 20;
+				ataqueGoblin = 20;
+				dificuldadeOpcao = false;
+			break;
+			case "M":
+				vidaCobra = 20;
+				ataqueCobra = 10;
+				vidaOnca = 70;
+				ataqueOnca = 40;
+				vidaGoblin = 40;
+				ataqueGoblin = 30;
+				dificuldadeOpcao = false;
+			break;
+			case "D":
+				vidaCobra = 30;
+				ataqueCobra = 20;
+				vidaOnca = 100;
+				ataqueOnca = 50;
+				vidaGoblin = 60;
+				ataqueGoblin = 40;
+				dificuldadeOpcao = false;
+			break;
+			default:
+				System.out.println("Escolha alguma das opções");
+			break;
+			}
+		}
+
+		System.out.println("\nOlá aventureiro, parece que você ficou preso em uma floresta.");
+		
+		boolean tocoOpcao = true;
+		while(tocoOpcao) {
+			System.out.println("\nVocê encontrou um toco de madeira \nVocê quer pegar ? \nS (Sim) \nN (Não)");
+			String tocoOpcao2 = leia.next();
+			tocoOpcao2 = tocoOpcao2.toUpperCase();
+			
+			switch(tocoOpcao2) {
+				case "S":
+					System.out.println("Você equipou um toco de madeira");
+					ataque += 20;
+					tocoMadeira = true;
+					tocoOpcao = false;
+				break;
+				case "N":
+					ataque += 0;
+					tocoOpcao = false;
+				break;
+				default:
+					System.out.println("\nEscolha alguma opção");
+				break;
+			}
+		}
+		
+		while(vida > 0) {
+			System.out.println("\nEscolha algum caminho: \nS (Seguir em frente) \nA (Acampar)");
+			String opcao = leia.next();
+			opcao = opcao.toUpperCase();
+			
+			switch(opcao) {
+			
+				case "S":
+					randomNum = gerador.nextInt(6);
+					if(randomNum < 2) {
+						System.out.println("\nVocê passou para a proxima fase sem encontrar um monstro");
+					}else {
+						decisao();
+					}
+				break;
+				case "A":
+					acampar();
+				break;
+				default:
+					System.out.println("\nDigite algua da opções");
+				break;
+			}
+			
+			cooldownDescansso--;
+			tentativa++;
+			if (tentativa == 10) {
+				sobreviveu = false;
+			}
+			switch(dificuldade) {
+				case "F":
+					vidaCobra = 10;
+					ataqueCobra = 5;
+					vidaOnca = 20;
+					ataqueOnca = 30;
+					vidaGoblin = 15;
+					ataqueGoblin = 20;
+				break;
+				case "M":
+					vidaCobra = 20;
+					ataqueCobra = 10;
+					vidaOnca = 40;
+					ataqueOnca = 60;
+					vidaGoblin = 30;
+					ataqueGoblin = 40;
+				break;
+				case "D":
+					vidaCobra = 30;
+					ataqueCobra = 20;
+					vidaOnca = 100;
+					ataqueOnca = 80;
+					vidaGoblin = 60;
+					ataqueGoblin = 60;
+				break;
+			}
+		}
+		System.out.println("Você morreu \nVocê conseguiu sobreviver por " + tentativa + " rodadas");
+	}
+
+}
